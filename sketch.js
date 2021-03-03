@@ -1,10 +1,10 @@
-var monkey, ground, bananaGroup, obsacleGroup, survivalTime;
-var monkeyImage, bananaImage, groundImage, stoneImage;
+var monkey, jungle, bananaGroup, obsacleGroup, survivalTime;
+var monkeyImage, bananaImage, jungleImage, stoneImage;
 
 function preload() {
   monkeyImage = loadAnimation("Monkey_01.png", "Monkey_02.png", "Monkey_03.png", "Monkey_04.png", "Monkey_05.png", "Monkey_06.png", "Monkey_07.png", "Monkey_08.png", "Monkey_09.png", "Monkey_10.png");
 
-  groundImage = loadImage("jungle.jpg");
+  jungleImage = loadImage("jungle.jpg");
 
   stoneImage = loadImage("stone.png");
 
@@ -14,10 +14,10 @@ function preload() {
 function setup() {
   createCanvas(400, 400);
 
-  ground = createSprite(400, 350, 800, 10);
-  ground.velocityX = -4;
-  ground.addImage("grass", groundImage);
-  ground.scale = 2.3;
+  jungle = createSprite(400, 350, 800, 10);
+  //jungle.velocityX = -4;
+  jungle.addImage("grass", jungleImage);
+  jungle.scale = 2.3;
 
   monkey = createSprite(100, 300, 20, 50);
   monkey.addAnimation("monkey", monkeyImage);
@@ -26,7 +26,8 @@ function setup() {
   bananaGroup = new Group();
   obstacleGroup = createGroup();
   
-  invisibleGround=createSprite(200,380,400,30);
+  invisibleGround = createSprite(200, 420, 410, 30);
+  invisibleGround.visible = false;
 
   survivalTime = 0;
 
@@ -39,11 +40,17 @@ function draw() {
 
   fill("black");
   survivalTime = Math.ceil(frameCount / frameRate())
+  monkey.velocityX = 4;
+  
+  camera.position.x = monkey.x;
+  camera.position.y = height/2;
+
+  invisibleGround.x = monkey.x;
   
 
-  if (ground.x < 0) {
-    ground.x = ground.width / 2;
-  }
+  if (monkey.x % 400 === 0) {
+    jungle.x = monkey.x;
+  } 
   monkey.collide(invisibleGround);
 
   if (keyDown("space")) {
@@ -57,18 +64,18 @@ function draw() {
   obstacles();
 
   drawSprites()
-  text("Survival Time: " + survivalTime, 100, 50);
+  text("Survival Time: " + survivalTime, monkey.x, 50);
 }
 
 function food() {
   if (frameCount % 80 === 0) {
-    var banana = createSprite(400, 120, 20, 20);
+    var banana = createSprite(monkey.x + 500, 120, 20, 20);
     banana.addImage("Banana", bananaImage);
     banana.scale = 0.05;
 
     banana.y = random(120, 200);
 
-    banana.velocityX = -7;
+    //banana.velocityX = -7;
     banana.setLifetime = 100;
 
     bananaGroup.add(banana);
@@ -77,13 +84,11 @@ function food() {
 
 function obstacles() {
   if (frameCount % 300 === 0) {
-    var obstacle = createSprite(400, 75, 20, 20);
+    var obstacle = createSprite(monkey.x + 250, 380, 20, 20);
     obstacle.addImage("Stone", stoneImage);
     obstacle.scale = 0.1;
 
-    obstacle.y = random(120, 200);
-
-    obstacle.velocityX = -7;
+    //obstacle.velocityX = -7;
     obstacle.setLifetime = 50;
 
     obstacleGroup.add(obstacle);
