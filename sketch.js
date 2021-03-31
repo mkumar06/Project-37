@@ -65,6 +65,10 @@ function draw() {
 
   drawSprites()
   text("Survival Time: " + survivalTime, monkey.x, 50);
+
+  if(survivalTime == 50) {
+    gameState.end();
+  }
 }
 
 function food() {
