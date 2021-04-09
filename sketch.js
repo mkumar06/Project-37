@@ -15,7 +15,7 @@ function preload() {
 function setup() {
   createCanvas(400, 400);
 
-  gameState = play;
+  gameState = "play";
   jungle = createSprite(400, 350, 800, 10);
   //jungle.velocityX = -4;
   jungle.addImage("grass", jungleImage);
@@ -69,7 +69,7 @@ function draw() {
   text("Survival Time: " + survivalTime, monkey.x, 50);
 
   if(survivalTime == 50) {
-    gameState = end;
+    gameState = "end";
   }
 }
 
